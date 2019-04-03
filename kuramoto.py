@@ -1,0 +1,91 @@
+import numpy as np
+from scipy.integrate import odeint
+
+
+class Kuramoto:
+    
+    def __init__(self, coupling=1, dt=0.01, T=10, n_nodes=None, natfreqs=None):
+        '''        
+        coupling: float
+            Coupling strength. Default = 1. Typical values range between 0.4-2
+        dt: float
+            Delta t for integration of equations.
+        T: float
+            Total time of simulated activity.
+            From that the number of integration steps is T/dt.    
+        n_nodes: int, optional
+            Number of oscillators. 
+            If None, it is inferred from len of natfreqs.
+            Must be specified if natfreqs is not given.
+        natfreqs: 1D ndarray, optional
+            Natural oscillation frequencies.
+            If None, then new random values will be generated and kept fixed 
+            for the object instance.            
+            Must be specified if n_nodes is not given.
+            If given, it overrides the n_nodes argument.
+        '''  
+        assert None != (n_nodes or natfreqs), \
+            'n_nodes or natfreqs must be specified'                     
+        self.dt = dt
+        self.T = T        
+        self.coupling = coupling                        
+        
+        if natfreqs:
+            self.natfreqs = natfreqs 
+            self.n_nodes = len(natfreqs)
+        else:            
+            self.n_nodes = n_nodes
+            self.natfreqs = np.random.normal(size=self.n_nodes)                       
+    
+    def init_angles(self):
+        '''
+        Random initial random angles (position, "theta").                  
+        '''    
+        return 2 * np.pi * np.random.random(size=self.n_nodes)
+    
+    def derivative(self, angles_vec, t, adj_mat):        
+        '''
+        Compute derivative for current state
+
+        t: for compatibility with scipy.odeint        
+        '''
+        assert len(angles_vec) == len(self.natfreqs) == len(adj_mat), \
+            'Input dimensions do not match, check lengths'            
+
+        angles_i, angles_j = np.meshgrid(angles_vec, angles_vec)
+        dxdt = self.natfreqs + self.coupling / adj_mat.sum(axis=0) \
+               * (adj_mat * np.sin(angles_j - angles_i)).sum(axis=0) # count incoming neighbors                                          
+        return dxdt
+
+    def integrate(self, angles_vec, adj_mat):
+        '''Updates all states by integrating state of all nodes'''             
+        t = np.linspace(0, self.T, self.T/self.dt) 
+        timeseries = odeint(self.derivative, angles_vec, t, args=(adj_mat,))       
+        return timeseries.T  # transpose for consistency (act_mat:node vs time)
+        
+    def phase_coherence(self, angles_vec):
+        '''
+        compute global order parameter R_t - mean length of resultant vector
+        '''
+        suma = sum([(np.e ** (1j * i)) for i in angles_vec])
+        return abs(suma / len(angles_vec))
+
+    def run(self, angles_vec=None, adj_mat=None):
+        '''
+        adj_mat: 2D nd array
+            Adjacency matrix representing connectivity (must be symmetric).
+        angles_vec: 1D ndarray
+            States vector of nodes representing the position in radians.            
+
+        Returns
+        -------
+        act_mat: 2D ndarray
+            Activity matrix: node vs time matrix with the time series of all 
+            the nodes.    
+        '''
+        assert (adj_mat == adj_mat.T).all(), 'adj_mat must be symmetric'
+
+        if angles_vec is None:
+            angles_vec = self.init_angles()
+
+        return self.integrate(angles_vec, adj_mat)
