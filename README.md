@@ -30,10 +30,10 @@ plt.figure(figsize=(12, 4))
 plt.plot(np.sin(act_mat.T))
 plt.xlabel('time', fontsize=25)
 plt.ylabel(r'$\sin(\theta)$', fontsize=25)
-
+```
 ![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/timeseries.png)
 
-
+```python
 # Plot evolution of order global order parameter R_t
 plt.figure(figsize=(12, 4))
 plt.plot(
@@ -44,10 +44,10 @@ plt.plot(
 plt.ylabel('order parameter', fontsize=25)
 plt.xlabel('time', fontsize=25)
 plt.ylim((-0.01, 1))
-
+```
 ![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/orderparam.png)
        
-
+```python
 # Plot oscillators in complex plane at times t = 0, 250, 500
 fig, axes = plt.subplots(ncols=3, nrows=1, figsize=(14, 4))
 
@@ -63,9 +63,9 @@ for ax, time in zip(axes, times):
     ax.set_ylabel(r'$\sin(\theta)$', fontsize=25)
     ax.grid(True)
 plt.tight_layout()
-
-![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/oscillators.png)
 ```
+![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/oscillators.png)
+
 
 ## Requirements
 - numpy
