@@ -31,7 +31,7 @@ plt.plot(np.sin(act_mat.T))
 plt.xlabel('time', fontsize=25)
 plt.ylabel(r'$\sin(\theta)$', fontsize=25)
 
-![png](https://github.com/fabridamicelli/kuramoto_model/tree/master/images/timeseries.png)
+![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/timeseries.png)
 
 
 # Plot evolution of order global order parameter R_t
@@ -45,8 +45,8 @@ plt.ylabel('order parameter', fontsize=25)
 plt.xlabel('time', fontsize=25)
 plt.ylim((-0.01, 1))
 
-![png](https://github.com/fabridamicelli/kuramoto_model/tree/master/images/orderparam.png)
-
+![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/orderparam.png)
+       
 
 # Plot oscillators in complex plane at times t = 0, 250, 500
 fig, axes = plt.subplots(ncols=3, nrows=1, figsize=(14, 4))
@@ -64,7 +64,7 @@ for ax, time in zip(axes, times):
     ax.grid(True)
 plt.tight_layout()
 
-![png](https://github.com/fabridamicelli/kuramoto_model/tree/master/images/oscillators.png)
+![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/oscillators.png)
 ```
 
 ## Requirements
@@ -83,8 +83,8 @@ plt.tight_layout()
 - A random initial (angular) position _theta<sub>i_ is assigned to each oscillator.
 - The oscillator's state (position) _theta<sub>i_ is governed by the following differential equation:
 
-![jpg](https://github.com/fabridamicelli/kuramoto_model/tree/master/images/derivative.jpg)
-
+![jpg](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/derivative.jpg)
+      
 
 where K is the coupling parameter and _M<sub>i_ is the number of oscillators interacting with oscillator _i_. 
 _A_ is the _adjacency matrix_ enconding the interactions - typically binary and undirected (symmetric), such that if node _i_ interacts with node _j_, _A<sub>ij_ = 1, otherwise 0.
