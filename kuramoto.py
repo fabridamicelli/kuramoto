@@ -42,7 +42,7 @@ class Kuramoto:
         Random initial random angles (position, "theta").                  
         '''    
         return 2 * np.pi * np.random.random(size=self.n_nodes)
-    
+
     def derivative(self, angles_vec, t, adj_mat):        
         '''
         Compute derivative for current state
@@ -62,18 +62,11 @@ class Kuramoto:
         t = np.linspace(0, self.T, self.T/self.dt) 
         timeseries = odeint(self.derivative, angles_vec, t, args=(adj_mat,))       
         return timeseries.T  # transpose for consistency (act_mat:node vs time)
-        
-    def phase_coherence(self, angles_vec):
-        '''
-        compute global order parameter R_t - mean length of resultant vector
-        '''
-        suma = sum([(np.e ** (1j * i)) for i in angles_vec])
-        return abs(suma / len(angles_vec))
-
+                    
     def run(self, angles_vec=None, adj_mat=None):
         '''
         adj_mat: 2D nd array
-            Adjacency matrix representing connectivity (must be symmetric).
+            Adjacency matrix representing connectivity.
         angles_vec: 1D ndarray
             States vector of nodes representing the position in radians.            
 
@@ -89,3 +82,61 @@ class Kuramoto:
             angles_vec = self.init_angles()
 
         return self.integrate(angles_vec, adj_mat)
+
+    def phase_coherence(self, angles_vec):
+        '''
+        Compute global order parameter R_t - mean length of resultant vector
+        '''
+        suma = sum([(np.e ** (1j * i)) for i in angles_vec])
+        return abs(suma / len(angles_vec))
+
+    # The following functions are redundant, they're just more pure python
+    # implementations (and less efficient) in order to test the code.
+    def _derivative_purepython(self, angles_vec, adj_mat):        
+        '''Compute derivative for current state'''
+
+        assert len(angles_vec) == len(self.natfreqs) == len(adj_mat), \
+            'Input dimensions do not match, check lengths'            
+                
+        dxdt = np.zeros_like(self.natfreqs)
+        for node in range(self.n_nodes):            
+            # Add sumation term
+            dxdt[node] = sum([np.sin(angles_vec[j] - angles_vec[node])
+                              for j in np.where(adj_mat[:, node])[0]])
+        # Scale by coupling and interactions
+        dxdt *= self.coupling/adj_mat.sum(axis=0)
+        # Natural freq term
+        dxdt += self.natfreqs        
+        return dxdt
+
+    def _integrate_purepython(self, angles_vec, adj_mat):
+        '''Updates all states by integrating state of all nodes'''                     
+        dxdt = self._derivative_purepython(angles_vec, adj_mat)
+        return angles_vec + dxdt*self.dt       
+    
+    def _run_purepython(self, angles_vec=None, adj_mat=None):
+        '''
+        Integrate by hand each step (instead of using scipy.odeint)
+
+        adj_mat: 2D nd array
+            Adjacency matrix representing connectivity.
+        angles_vec: 1D ndarray
+            States vector of nodes representing the position in radians.            
+
+        Returns
+        -------
+        act_mat: 2D ndarray
+            Activity matrix: node vs time matrix with the time series of all 
+            the nodes.    
+        '''
+        if angles_vec is None:
+            angles_vec = self.init_angles()        
+
+        n_tot_steps = int(self.T/self.dt)
+        act_mat = np.zeros((self.n_nodes, n_tot_steps))
+        act_mat[:, 0] = angles_vec
+         
+        for timestep in range(n_tot_steps-1):                        
+            act_mat[:, timestep+1] = self._integrate_purepython(act_mat[:, timestep],                                                    
+                                                                adj_mat)                                                                                               
+        return act_mat
