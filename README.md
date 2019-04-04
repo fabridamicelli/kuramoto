@@ -101,7 +101,7 @@ A couple of facts in order to gain intuition about the model's behaviour:
 - About the global order parameter _R<sub>t_:
   - constant, in the double limit N -> inf, t -> inf
   - independent of the initial conditions
-  - denpends on coupling strength
+  - depends on coupling strength
   - it shows a sharp phase transition (as function of coupling)
 - Steady solutions can be computed assuming _R<sub>t_ constant. The result is basically that each oscillator responds to the mean field produced by the rest.
 - The higher the dimension of the lattice on which the oscillators are embedded, the easier it is to synchronize. For example, there isn't any good synchronization in one dimension, even with strong coupling. In two dimensions it is not clear yet. From 3 dimensions on, the model starts behaving more like the mean field prediction.
