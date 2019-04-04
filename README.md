@@ -83,7 +83,7 @@ plt.tight_layout()
 - A random initial (angular) position _theta<sub>i_ is assigned to each oscillator.
 - The oscillator's state (position) _theta<sub>i_ is governed by the following differential equation:
 
-![png](https://github.com/fabridamicelli/kuramoto_model/tree/master/images/derivative.png)
+![jpg](https://github.com/fabridamicelli/kuramoto_model/tree/master/images/derivative.jpg)
 
 
 where K is the coupling parameter and _M<sub>i_ is the number of oscillators interacting with oscillator _i_. 
