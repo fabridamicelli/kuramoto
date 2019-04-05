@@ -109,5 +109,6 @@ A couple of facts in order to gain intuition about the model's behaviour:
 For more and better details, [this talk](https://www.youtube.com/watch?v=5zFDMyQ8z8g) by the great Steven Strogatz is a nice primer.
 
 ## References & links 
+- [Dirk Brockmann's explorable](http://www.complexity-explorables.org/explorables/kuramoto/)
 - [Math Insight - applet](https://mathinsight.org/applet/kuramoto_order_parameters)
 - [Kuramoto, Y. (1984)](http://doi.org/10.1007/978-3-642-69689-3). Chemical Oscillations, Waves, and Turbulence (Vol. 19).
