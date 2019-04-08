@@ -34,7 +34,7 @@ plt.ylabel(r'$\sin(\theta)$', fontsize=25)
 ![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/timeseries.png)
 
 ```python
-# Plot evolution of order global order parameter R_t
+# Plot evolution of global order parameter R_t
 plt.figure(figsize=(12, 4))
 plt.plot(
     [model.phase_coherence(vec)
