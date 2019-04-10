@@ -15,6 +15,11 @@ import seaborn as sns
 
 from kuramoto import Kuramoto
 
+plt.style.use('seaborn')
+sns.set_style("whitegrid")
+sns.set_context("talk")
+
+
 # Instantiate a random graph and transform into an adjacency matrix
 graph_nx = nx.erdos_renyi_graph(n=100, p=1) # p=1 -> all-to-all connectivity
 graph = nx.to_numpy_array(graph_nx)
@@ -66,7 +71,7 @@ plt.tight_layout()
 ```
 ![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/oscillators.png)
 
-As a sanity check, let's look at the phase transition of the global order parameter (_R<sub>t_) as a function of coupling (_K_) (find critical coupling K<sub>c) and compare with numerical results already published by English, 2008 (see Ref.) – we will match those model parameters.
+### As a sanity check, let's look at the phase transition of the global order parameter (_R<sub>t_) as a function of coupling (_K_) (find critical coupling K<sub>c) and compare with numerical results already published by English, 2008 (see Ref.) – we will match those model parameters.
 
 ```python
 # Instantiate a random graph and transform into an adjacency matrix
@@ -83,7 +88,6 @@ for coupling in coupling_vals:
     act_mat = model.run(adj_mat=graph)   
     runs.append(act_mat)
 
-```python
 # Check that natural frequencies are correct (we need them for prediction of Kc)
 plt.figure()
 plt.hist(model.natfreqs)
@@ -95,7 +99,7 @@ plt.tight_layout()
 
 
 ```python
-# Plot all time series for all coupling values
+# Plot all time series for all coupling values (color coded)
 runs_array = np.array(runs)
 
 plt.figure()
@@ -113,9 +117,10 @@ plt.tight_layout()
 
 
 ```python
+# Plot final Rt for each coupling value
 plt.figure()
 for i, coupling in enumerate(coupling_vals):
-    r_mean = np.mean([phase_coherence(vec)
+    r_mean = np.mean([model.phase_coherence(vec)
                       for vec in runs_array[i, :, -1000:].T]) # mean over last 1000 steps
     plt.scatter(coupling, r_mean, c='steelblue', s=20, alpha=0.7)
 
@@ -176,7 +181,7 @@ For more and better details, [this talk](https://www.youtube.com/watch?v=5zFDMyQ
   - seaborn
 
 ## References & links 
-- [English, 2008](http://doi.org/10.1088/0143-0807/29/1/015)
-- [Dirk Brockmann's explorable](http://www.complexity-explorables.org/explorables/kuramoto/)
-- [Math Insight - applet](https://mathinsight.org/applet/kuramoto_order_parameters)
-- [Kuramoto, Y. (1984)](http://doi.org/10.1007/978-3-642-69689-3). Chemical Oscillations, Waves, and Turbulence (Vol. 19).
+- [English, 2008](http://doi.org/10.1088/0143-0807/29/1/015). Synchronization of oscillators: an ideal introduction to phase transitions.
+- [Dirk Brockmann's explorable](http://www.complexity-explorables.org/explorables/kuramoto/). “Ride my Kuramotocycle!”.
+- [Math Insight - applet](https://mathinsight.org/applet/kuramoto_order_parameters). The Kuramoto order parameters.
+- [Kuramoto, Y. (1984)](http://doi.org/10.1007/978-3-642-69689-3). Chemical Oscillations, Waves, and Turbulence.
