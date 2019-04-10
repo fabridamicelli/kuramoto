@@ -66,14 +66,72 @@ plt.tight_layout()
 ```
 ![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/oscillators.png)
 
+As a sanity check, let's look at the phase transition of the global order parameter (_R<sub>t_) as a function of coupling (_K_) (find critical coupling K<sub>c) and compare with numerical results already published by English, 2008 (see Ref.) – we will match those model parameters.
 
-## Requirements
-- numpy
-- scipy
-- For the example:
-  - matplotlib
-  - networkx
-  - seaborn
+```python
+# Instantiate a random graph and transform into an adjacency matrix
+n_nodes = 500 
+graph_nx = nx.erdos_renyi_graph(n=n_nodes, p=1) # p=1 -> all-to-all connectivity
+graph = nx.to_numpy_array(graph_nx)
+
+# Run model with different coupling (K) parameters
+coupling_vals = np.linspace(0, 0.6, 100)
+runs = []
+for coupling in coupling_vals:        
+    model = Kuramoto(coupling=coupling, dt=0.1, T=500, n_nodes=n_nodes) 
+    model.natfreqs = np.random.normal(1, 0.1, size=n_nodes)  # reset natural frequencies
+    act_mat = model.run(adj_mat=graph)   
+    runs.append(act_mat)
+
+```python
+# Check that natural frequencies are correct (we need them for prediction of Kc)
+plt.figure()
+plt.hist(model.natfreqs)
+plt.xlabel('natural frequency')
+plt.ylabel('count')
+plt.tight_layout()
+```
+![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/nat_freq_dist.png)
+
+
+```python
+# Plot all time series for all coupling values
+runs_array = np.array(runs)
+
+plt.figure()
+for i, coupling in enumerate(coupling_vals):
+    plt.plot(
+        [model.phase_coherence(vec)
+         for vec in runs_array[i, ::].T],
+        c=str(1-coupling),  # higher -> darker   
+    )
+plt.ylabel(r'order parameter ($R_t$)')
+plt.xlabel('time')
+plt.tight_layout()
+```
+![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/ts_diff_K.png)
+
+
+```python
+plt.figure()
+for i, coupling in enumerate(coupling_vals):
+    r_mean = np.mean([phase_coherence(vec)
+                      for vec in runs_array[i, :, -1000:].T]) # mean over last 1000 steps
+    plt.scatter(coupling, r_mean, c='steelblue', s=20, alpha=0.7)
+
+# Predicted Kc – analytical result (from paper)
+Kc = np.sqrt(8 / np.pi) * np.std(model.natfreqs) # analytical result (from paper)
+plt.vlines(Kc, 0, 1, linestyles='--', color='orange', label='analytical prediction')
+
+plt.legend()
+plt.grid(linestyle='--', alpha=0.8)
+plt.ylabel('order parameter (R)')
+plt.xlabel('coupling (K)')
+sns.despine()
+plt.tight_layout()
+```
+![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/phase_transition.png)
+
 
 ## Kuramoto model 101
 - The [Kuramoto model](https://en.wikipedia.org/wiki/Kuramoto_model) is used to study a wide range of systems with synchronization behaviour.
@@ -104,11 +162,21 @@ A couple of facts in order to gain intuition about the model's behaviour:
   - depends on coupling strength
   - it shows a sharp phase transition (as function of coupling)
 - Steady solutions can be computed assuming _R<sub>t_ constant. The result is basically that each oscillator responds to the mean field produced by the rest.
+- In the all-to-all connected scenaria, the critical coupling _K<sub>c_ can be analytically computed and it depends on the spread of the natural frequencies distribution (see English, 2008)
 - The higher the dimension of the lattice on which the oscillators are embedded, the easier it is to synchronize. For example, there isn't any good synchronization in one dimension, even with strong coupling. In two dimensions it is not clear yet. From 3 dimensions on, the model starts behaving more like the mean field prediction.
 
 For more and better details, [this talk](https://www.youtube.com/watch?v=5zFDMyQ8z8g) by the great Steven Strogatz is a nice primer.
 
+## Requirements
+- numpy
+- scipy
+- For the example:
+  - matplotlib
+  - networkx
+  - seaborn
+
 ## References & links 
+- [English, 2008](http://doi.org/10.1088/0143-0807/29/1/015)
 - [Dirk Brockmann's explorable](http://www.complexity-explorables.org/explorables/kuramoto/)
 - [Math Insight - applet](https://mathinsight.org/applet/kuramoto_order_parameters)
 - [Kuramoto, Y. (1984)](http://doi.org/10.1007/978-3-642-69689-3). Chemical Oscillations, Waves, and Turbulence (Vol. 19).
