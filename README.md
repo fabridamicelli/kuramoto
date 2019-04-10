@@ -71,7 +71,7 @@ plt.tight_layout()
 ```
 ![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/oscillators.png)
 
-### As a sanity check, let's look at the phase transition of the global order parameter (_R<sub>t_) as a function of coupling (_K_) (find critical coupling K<sub>c) and compare with numerical results already published by English, 2008 (see Ref.) – we will match those model parameters.
+### As a sanity check, let's look at the phase transition of the global order parameter (_R<sub>t_) as a function of coupling (_K_) (find critical coupling _K<sub>c_) and compare with numerical results already published by English, 2008 (see Ref.) – we will match those model parameters.
 
 ```python
 # Instantiate a random graph and transform into an adjacency matrix
