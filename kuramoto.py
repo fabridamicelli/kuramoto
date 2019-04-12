@@ -45,7 +45,7 @@ class Kuramoto:
 
     def derivative(self, angles_vec, t, adj_mat):        
         '''
-        Compute derivative for current state
+        Compute derivative of all nodes for current state
 
         t: for compatibility with scipy.odeint        
         '''
@@ -63,12 +63,13 @@ class Kuramoto:
         timeseries = odeint(self.derivative, angles_vec, t, args=(adj_mat,))       
         return timeseries.T  # transpose for consistency (act_mat:node vs time)
                     
-    def run(self, angles_vec=None, adj_mat=None):
+    def run(self, adj_mat=None, angles_vec=None):
         '''
         adj_mat: 2D nd array
             Adjacency matrix representing connectivity.
-        angles_vec: 1D ndarray
-            States vector of nodes representing the position in radians.            
+        angles_vec: 1D ndarray, optional
+            States vector of nodes representing the position in radians.  
+            If not specified, random initialization [0, 2pi].          
 
         Returns
         -------
@@ -89,6 +90,24 @@ class Kuramoto:
         '''
         suma = sum([(np.e ** (1j * i)) for i in angles_vec])
         return abs(suma / len(angles_vec))
+
+    def mean_frequency(self, act_mat, adj_mat):
+        '''
+        Compute average frequency within the time window (self.T) for all nodes        
+        '''
+        assert len(adj_mat) == act_mat.shape[0], 'adj_mat does not match act_mat'
+        _, n_steps = act_mat.shape
+        
+        # Compute derivative for all nodes for all time steps
+        dxdt = np.zeros_like(act_mat)
+        for time in range(n_steps):
+            dxdt[:, time] = self.derivative(act_mat[:, time], None, adj_mat) 
+        
+        # Integrate all nodes over the time window T        
+        integral = np.sum(dxdt * self.dt, axis=1)        
+        # Average across complete time window - mean angular velocity (freq.)
+        meanfreq = integral / self.T
+        return meanfreq
 
     # The following functions are redundant, they're just more pure python
     # implementations (and less efficient) in order to test the code.
