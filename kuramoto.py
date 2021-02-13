@@ -24,13 +24,14 @@ class Kuramoto:
             Must be specified if n_nodes is not given.
             If given, it overrides the n_nodes argument.
         '''
-        assert n_nodes is not None and natfreqs is not None, \
-            'n_nodes or natfreqs must be specified'
+        if n_nodes is None and natfreqs is None:
+            raise ValueError("n_nodes or natfreqs must be specified")
+
         self.dt = dt
         self.T = T
         self.coupling = coupling
 
-        if natfreqs:
+        if natfreqs is not None:
             self.natfreqs = natfreqs
             self.n_nodes = len(natfreqs)
         else:
@@ -59,7 +60,7 @@ class Kuramoto:
 
     def integrate(self, angles_vec, adj_mat):
         '''Updates all states by integrating state of all nodes'''
-        t = np.linspace(0, self.T, self.T/self.dt)
+        t = np.linspace(0, self.T, int(self.T/self.dt))
         timeseries = odeint(self.derivative, angles_vec, t, args=(adj_mat,))
         return timeseries.T  # transpose for consistency (act_mat:node vs time)
 
