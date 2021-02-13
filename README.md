@@ -180,6 +180,13 @@ For more and better details, [this talk](https://www.youtube.com/watch?v=5zFDMyQ
   - networkx
   - seaborn
 
+## Tests
+Run tests with
+```bash
+make test
+```
+
+
 ## References & links 
 - [English, 2008](http://doi.org/10.1088/0143-0807/29/1/015). Synchronization of oscillators: an ideal introduction to phase transitions.
 - [Dirk Brockmann's explorable](http://www.complexity-explorables.org/explorables/kuramoto/). “Ride my Kuramotocycle!”.
