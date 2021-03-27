@@ -1,6 +1,12 @@
 # kuramoto
 Python implementation of the Kuramoto model on graphs.
 
+## Install
+```sh
+pip install kuramoto
+```
+
+
 ## Features
 - Graph is represented as an adjacency matrix _A_, a 2D numpy ndarray.
 - Interactions between oscillators are symmetric (i.e., _A = A<sup>T_)
