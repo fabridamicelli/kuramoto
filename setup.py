@@ -16,7 +16,7 @@ test_packages = [
 
 setup(
     name='kuramoto',
-    version='0.2',
+    version='0.2.1',
     description=DESCRIPTION,
     author='Fabrizio Damicelli',
     author_email='fabridamicelli@gmail.com',
