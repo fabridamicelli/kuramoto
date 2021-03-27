@@ -1,4 +1,4 @@
-# kuramoto_model
+# kuramoto
 Python implementation of the Kuramoto model on graphs.
 
 ## Features
