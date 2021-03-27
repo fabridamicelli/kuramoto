@@ -5,6 +5,7 @@ DESCRIPTION = 'Kuramoto model on graphs'
 
 base_packages = [
     "numpy>=1.16.0",
+    "scipy",
 ]
 
 test_packages = [
@@ -15,7 +16,7 @@ test_packages = [
 
 setup(
     name='kuramoto',
-    version='0.1',
+    version='0.2',
     description=DESCRIPTION,
     author='Fabrizio Damicelli',
     author_email='fabridamicelli@gmail.com',
