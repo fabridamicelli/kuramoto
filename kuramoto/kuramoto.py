@@ -85,7 +85,8 @@ class Kuramoto:
 
         return self.integrate(angles_vec, adj_mat)
 
-    def phase_coherence(self, angles_vec):
+    @staticmethod
+    def phase_coherence(angles_vec):
         '''
         Compute global order parameter R_t - mean length of resultant vector
         '''
