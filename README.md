@@ -21,10 +21,8 @@ import seaborn as sns
 
 from kuramoto import Kuramoto
 
-plt.style.use('seaborn')
 sns.set_style("whitegrid")
-sns.set_context("talk")
-
+sns.set_context("notebook", font_scale=1.6)
 
 # Instantiate a random graph and transform into an adjacency matrix
 graph_nx = nx.erdos_renyi_graph(n=100, p=1) # p=1 -> all-to-all connectivity
@@ -48,7 +46,7 @@ plt.ylabel(r'$\sin(\theta)$', fontsize=25)
 # Plot evolution of global order parameter R_t
 plt.figure(figsize=(12, 4))
 plt.plot(
-    [model.phase_coherence(vec)
+    [Kuramoto.phase_coherence(vec)
      for vec in act_mat.T],
     'o'
 )
@@ -60,38 +58,39 @@ plt.ylim((-0.01, 1))
        
 ```python
 # Plot oscillators in complex plane at times t = 0, 250, 500
-fig, axes = plt.subplots(ncols=3, nrows=1, figsize=(14, 4))
+fig, axes = plt.subplots(ncols=3, nrows=1, figsize=(15, 5),
+                         subplot_kw={
+                             "ylim": (-1.1, 1.1),
+                             "xlim": (-1.1, 1.1),
+                             "xlabel": r'$\cos(\theta)$',
+                             "ylabel": r'$\sin(\theta)$',
+                         })
 
 times = [0, 200, 500]
 for ax, time in zip(axes, times):
-    ax.plot(np.cos(act_mat[:, time]), 
-            np.sin(act_mat[:, time]), 
-            'o', markersize=10)
-    ax.set_title(f'time = {time}')
-    ax.set_ylim((-1.1, 1.1))
-    ax.set_xlim((-1.1, 1.1))
-    ax.set_xlabel(r'$\cos(\theta)$', fontsize=25)
-    ax.set_ylabel(r'$\sin(\theta)$', fontsize=25)
-    ax.grid(True)
-plt.tight_layout()
+    ax.plot(np.cos(act_mat[:, time]),
+            np.sin(act_mat[:, time]),
+            'o',
+            markersize=10)
+    ax.set_title(f'Time = {time}')
 ```
 ![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/oscillators.png)
 
-### As a sanity check, let's look at the phase transition of the global order parameter (_R<sub>t_) as a function of coupling (_K_) (find critical coupling _K<sub>c_) and compare with numerical results already published by English, 2008 (see Ref.) – we will match those model parameters.
+As a sanity check, let's look at the phase transition of the global order parameter (_R<sub>t_) as a function of coupling (_K_) (find critical coupling _K<sub>c_) and compare with numerical results already published by English, 2008 (see Ref.) – we will match those model parameters.
 
 ```python
 # Instantiate a random graph and transform into an adjacency matrix
-n_nodes = 500 
+n_nodes = 500
 graph_nx = nx.erdos_renyi_graph(n=n_nodes, p=1) # p=1 -> all-to-all connectivity
 graph = nx.to_numpy_array(graph_nx)
 
 # Run model with different coupling (K) parameters
 coupling_vals = np.linspace(0, 0.6, 100)
 runs = []
-for coupling in coupling_vals:        
-    model = Kuramoto(coupling=coupling, dt=0.1, T=500, n_nodes=n_nodes) 
+for coupling in coupling_vals:
+    model = Kuramoto(coupling=coupling, dt=0.1, T=500, n_nodes=n_nodes)
     model.natfreqs = np.random.normal(1, 0.1, size=n_nodes)  # reset natural frequencies
-    act_mat = model.run(adj_mat=graph)   
+    act_mat = model.run(adj_mat=graph)
     runs.append(act_mat)
 
 # Check that natural frequencies are correct (we need them for prediction of Kc)
@@ -99,7 +98,6 @@ plt.figure()
 plt.hist(model.natfreqs)
 plt.xlabel('natural frequency')
 plt.ylabel('count')
-plt.tight_layout()
 ```
 ![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/nat_freq_dist.png)
 
@@ -117,7 +115,6 @@ for i, coupling in enumerate(coupling_vals):
     )
 plt.ylabel(r'order parameter ($R_t$)')
 plt.xlabel('time')
-plt.tight_layout()
 ```
 ![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/ts_diff_K.png)
 
@@ -139,7 +136,6 @@ plt.grid(linestyle='--', alpha=0.8)
 plt.ylabel('order parameter (R)')
 plt.xlabel('coupling (K)')
 sns.despine()
-plt.tight_layout()
 ```
 ![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/phase_transition.png)
 
