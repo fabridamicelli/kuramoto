@@ -2,6 +2,9 @@ from setuptools import setup, find_packages
 
 
 DESCRIPTION = 'Kuramoto model on graphs'
+with open('README.md', encoding='utf-8') as f:
+    LONG_DESCRIPTION = f.read()
+
 
 base_packages = [
     "numpy>=1.16.0",
@@ -16,8 +19,10 @@ test_packages = [
 
 setup(
     name='kuramoto',
-    version='0.2.2',
+    version='0.2.3',
     description=DESCRIPTION,
+    long_description=LONG_DESCRIPTION,
+    long_description_content_type='text/markdown',
     author='Fabrizio Damicelli',
     author_email='fabridamicelli@gmail.com',
     url="https://github.com/fabridamicelli/kuramoto",
