@@ -1,10 +1,10 @@
-[![Downloads](https://static.pepy.tech/personalized-badge/kuramoto?period=total&units=international_system&left_color=blue&right_color=orange&left_text=Downloads)](https://pepy.tech/project/kuramoto)
+[![Downloads](https://static.pepy.tech/personalized-badge/kuramoto?period=month&units=international_system&left_color=black&right_color=orange&left_text=Downloads)](https://pepy.tech/project/kuramoto)
 
 # kuramoto
 Python implementation of the Kuramoto model on graphs.
 
 ## Install
-```sh
+```bash
 pip install kuramoto
 ```
 
