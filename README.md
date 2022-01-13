@@ -1,7 +1,7 @@
 [![Downloads](https://static.pepy.tech/personalized-badge/kuramoto?period=total&units=international_system&left_color=black&right_color=orange&left_text=Downloads)](https://pepy.tech/project/kuramoto)
 
 # kuramoto
-Python implementation of the Kuramoto model on graphs.
+Python implementation of the Kuramoto model.
 
 ## Install
 ```bash
@@ -10,18 +10,17 @@ pip install kuramoto
 
 
 ## Features
-- Graph is represented as an adjacency matrix _A_, a 2D numpy ndarray.
+- Interactions are represented as an adjacency matrix _A_, a 2D numpy ndarray.
 - Interactions between oscillators are symmetric (i.e., _A = A<sup>T_)
-- It is implemented with a graph in mind, but basically can be used to any system, provided its representation can be mapped onto a (symmetric) adjacency matrix.
 
-## Example:
+## Usage
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
 import seaborn as sns
 
-from kuramoto import Kuramoto
+from kuramoto import Kuramoto, plot_phase_coherence, plot_activity
 
 sns.set_style("whitegrid")
 sns.set_context("notebook", font_scale=1.6)
@@ -37,24 +36,13 @@ model = Kuramoto(coupling=3, dt=0.01, T=10, n_nodes=len(graph))
 act_mat = model.run(adj_mat=graph)
 
 # Plot all the time series
-plt.figure(figsize=(12, 4))
-plt.plot(np.sin(act_mat.T))
-plt.xlabel('time', fontsize=25)
-plt.ylabel(r'$\sin(\theta)$', fontsize=25)
+plot_activity(act_mat)
 ```
 ![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/timeseries.png)
 
 ```python
 # Plot evolution of global order parameter R_t
-plt.figure(figsize=(12, 4))
-plt.plot(
-    [Kuramoto.phase_coherence(vec)
-     for vec in act_mat.T],
-    'o'
-)
-plt.ylabel('order parameter', fontsize=25)
-plt.xlabel('time', fontsize=25)
-plt.ylim((-0.01, 1))
+plot_phase_coherence(act_mat)
 ```
 ![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/orderparam.png)
        
@@ -179,8 +167,9 @@ For more and better details, [this talk](https://www.youtube.com/watch?v=5zFDMyQ
 ## Requirements
 - numpy
 - scipy
-- For the example:
-  - matplotlib
+- matplotlib
+- For the examples:
+  - bctpy
   - networkx
   - seaborn
 

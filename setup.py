@@ -9,6 +9,7 @@ with open('README.md', encoding='utf-8') as f:
 base_packages = [
     "numpy>=1.16.0",
     "scipy",
+    "matplotlib",
 ]
 
 test_packages = [
