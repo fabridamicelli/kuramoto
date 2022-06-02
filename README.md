@@ -179,6 +179,19 @@ Run tests with
 make test
 ```
 
+## Citing
+
+If you find this package useful for a publication, then please use the following BibTeX to cite it:
+```
+@misc{kuramoto,
+  author = {Damicelli, Fabrizio},
+  title = {Python implementation of the Kuramoto model},
+  year = {2019},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/fabridamicelli/kuramoto}},
+}
+```
 
 ## References & links 
 - [English, 2008](http://doi.org/10.1088/0143-0807/29/1/015). Synchronization of oscillators: an ideal introduction to phase transitions.
