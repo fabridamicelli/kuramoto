@@ -88,8 +88,6 @@ class Kuramoto:
             Activity matrix: node vs time matrix with the time series of all
             the nodes.
         '''
-        assert (adj_mat == adj_mat.T).all(), 'adj_mat must be symmetric'
-
         if angles_vec is None:
             angles_vec = self.init_angles()
 

@@ -20,7 +20,7 @@ test_packages = [
 
 setup(
     name='kuramoto',
-    version='0.2.4',
+    version='0.3.0',
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
