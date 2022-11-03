@@ -6,12 +6,8 @@ Python implementation of the Kuramoto model.
 ## Install
 ```bash
 pip install kuramoto
+
 ```
-
-
-## Features
-- Interactions are represented as an adjacency matrix _A_, a 2D numpy ndarray.
-- Interactions between oscillators are symmetric (i.e., _A = A<sup>T_)
 
 ## Usage
 ```python
@@ -25,6 +21,7 @@ from kuramoto import Kuramoto, plot_phase_coherence, plot_activity
 sns.set_style("whitegrid")
 sns.set_context("notebook", font_scale=1.6)
 
+# Interactions are represented as an adjacency matrix _A_, a 2D numpy ndarray.
 # Instantiate a random graph and transform into an adjacency matrix
 graph_nx = nx.erdos_renyi_graph(n=100, p=1) # p=1 -> all-to-all connectivity
 graph = nx.to_numpy_array(graph_nx)
