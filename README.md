@@ -1,5 +1,7 @@
 [![Downloads](https://static.pepy.tech/personalized-badge/kuramoto?period=total&units=international_system&left_color=black&right_color=orange&left_text=Downloads)](https://pepy.tech/project/kuramoto)
 
+Like the package? Don't forget to give it a GitHub ⭐ to help others find and trust it!
+
 # kuramoto
 Python implementation of the Kuramoto model.
 
