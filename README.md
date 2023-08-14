@@ -12,6 +12,8 @@ pip install kuramoto
 ```
 
 ## Usage
+- Quick start: Run [this notebook example](examples/basic_usage.ipynb)
+
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
@@ -26,16 +28,16 @@ sns.set_context("notebook", font_scale=1.6)
 # Interactions are represented as an adjacency matrix _A_, a 2D numpy ndarray.
 # Instantiate a random graph and transform into an adjacency matrix
 graph_nx = nx.erdos_renyi_graph(n=100, p=1) # p=1 -> all-to-all connectivity
-graph = nx.to_numpy_array(graph_nx)
+adj_mat = nx.to_numpy_array(graph_nx)
 
 # Instantiate model with parameters
-model = Kuramoto(coupling=3, dt=0.01, T=10, n_nodes=len(graph))
+model = Kuramoto(coupling=3, dt=0.01, T=10, n_nodes=len(adj_mat))
 
 # Run simulation - output is time series for all nodes (node vs time)
-act_mat = model.run(adj_mat=graph)
+activity = model.run(adj_mat=adj_mat)
 
 # Plot all the time series
-plot_activity(act_mat)
+plot_activity(activity)
 ```
 ![png](https://github.com/fabridamicelli/kuramoto_model/blob/master/images/timeseries.png)
 
